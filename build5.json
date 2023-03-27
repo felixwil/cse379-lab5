@@ -1,0 +1,9 @@
+{
+    "uart_interrupt_init": [
+        [
+            "if", "r0 == r1",
+            "MOV r0, r1",
+            "elif", "r0 > r1"
+        ]
+    ]
+}

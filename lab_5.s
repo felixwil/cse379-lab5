@@ -32,7 +32,7 @@ lab5:	; This is your main routine which is called from your C wrapper
 	ldr r4, ptr_to_prompt
 	ldr r5, ptr_to_mydata
 
-        bl uart_init
+    bl uart_init
 	bl uart_interrupt_init
 	bl uart_interrupt_init
 
