@@ -141,7 +141,7 @@ gpio_interrupt_init:
 
 
 UART0_Handler: 
-	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION (BUT WOULDN'T HURT)
+	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION
 	; Your code for your UART handler goes here.
 	; Remember to preserver registers r4-r11 by pushing then popping 
 	; them to & from the stack at the beginning & end of the handler
@@ -189,7 +189,7 @@ Switch_Handler:
     BX lr
 
 Timer_Handler:
-	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION (BUT WOULDN'T HURT)
+	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION 
 	; Your code for your Timer handler goes here.  It is not needed
 	; for Lab #5, but will be used in Lab #6.  It is referenced here
 	; because the interrupt enabled startup code has declared Timer_Handler.
