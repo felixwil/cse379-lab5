@@ -3,7 +3,7 @@
 	.global prompt
 	.global mydata
 
-start_prompt:	.string "Press sw1 or any key to continue", 0
+start_prompt:	.string "Press sw1 or any key to continue:", 0
 switch_counter:	.byte	0x00	; This is where you can store data. 
 UART_counter:	.byte	0x00			; The .byte assembler directive stores a byte
 			; (initialized to 0x20) at the label mydata.  
@@ -24,8 +24,9 @@ UART_counter:	.byte	0x00			; The .byte assembler directive stores a byte
 	.global uart_init		; This is from your Lab #4 Library
 	.global lab5
 	
-ptr_to_prompt:		.word prompt
-ptr_to_mydata:		.word mydata
+ptr_to_start_prompt:		.word start_prompt
+ptr_to_switch_counter:		.word switch_counter
+ptr_to_UART_counter:		.word UART_counter
 
 lab5:	; This is your main routine which is called from your C wrapper    
 	PUSH {lr}   		; Store lr to stack
@@ -166,13 +167,19 @@ Switch_Handler:
     ORR r4, r4, #8          	; Set bit 4 to 1
 	STRB r4, [r11]				; Store back to clear interrupt
 
-	; Increment the switch counter, first load it
-    ldr r11, ptr_to_mydata     ; set bit 4
-    LDRB r4, [r11]
-    ADD r4, r4, #1             ; r4 += #1
+	; Increment the switch counter, load it, increment, store
+    ldr r11, ptr_to_switch_counter	; Load the address
+    LDRB r4, [r11]					; Read the value into r4
+	ADD r4, r4, #1					; Increment the value
+	STRB r4, [r11]					; Store the value
     
-    STRB r4, [r11]             ; increment counter
+	; Display the graph
+	BL display_graph
+
+	; Restore registers
     POP {r4-r11}
+
+	; Return to interrupted instruction
     BX lr
 
 Timer_Handler:
