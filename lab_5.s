@@ -3,7 +3,7 @@
 	.global prompt
 	.global mydata
 
-start_prompt:	.string "Press sw1 or any key to continue:", 0
+start_prompt:	.string "Press sw1 or any key to continue, or press q to quit at any point:", 0
 sw1_header:		.string "sw1 : ", 0
 UART_header:	.string "UART: ", 0
 switch_counter:	.byte	0x00	; This is where you can store data. 
@@ -34,16 +34,23 @@ ptr_to_UART_counter:		.word UART_counter
 
 lab5:	; This is your main routine which is called from your C wrapper    
 	PUSH {lr}   		; Store lr to stack
-	ldr r4, ptr_to_prompt
-	ldr r5, ptr_to_mydata
 
+	; Initialize everything
     bl uart_init
 	bl uart_interrupt_init
-	bl uart_interrupt_init
+	bl gpio_interrupt_init
 
-	; This is where you should implement a loop, waiting for the user to 
-	; enter a q, indicating they want to end the program.
- 
+	; Load initial prompt and then print it to screen
+	LDR r0, ptr_to_start_prompt
+	BL output_string
+
+lab5_loop:
+	; If q, branch to end, otherwise continue
+	CMP r0, #0x71	
+	BEQ end_loop	; If q pressed jump to end
+	B lab5_loop		; If q not pressed, continue looping
+
+end_loop:
 	POP {lr}		; Restore lr from the stack
 	MOV pc, lr
 
@@ -153,11 +160,7 @@ UART0_Handler:
 	STRB r4, [r11]		; Store
 
 	; Simple_read_character
-	BL simple_read_character
-
-	; If q, branch to end, otherwise continue
-	CMP r0, #0x71	
-	BEQ end_program ; ###################################IMPLEMENT THIS####################################
+	BL simple_read_character 
 
 	; Load UART counter, increment it, and store it
 	LDR r11, ptr_to_UART_counter
