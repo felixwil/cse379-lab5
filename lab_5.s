@@ -43,7 +43,6 @@ lab5:	; This is your main routine which is called from your C wrapper
 	MOV pc, lr
 
 
-
 uart_interrupt_init:
     PUSH {lr, r4-r11}          ; store regs
     ; Configure UART for interrupts
@@ -105,26 +104,28 @@ UART0_Handler:
 	; Restore registers
 
 	BX lr       	; Return
-
-
+	
 Switch_Handler:
     PUSH {r4-r11}
 
     ; clearing the interrupt
-    
     MOV  r11, #0x541c
     MOVT r11, #0x4002          ; setting the address
     LDRB r4, [r11]             ; loading the data into r4
     
     ORR r4, r4, #8             ; r4 |= #8
+    
+    MOV  r11, #0x541c
+    MOVT r11, #0x4002          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
     ldr r11, ptr_to_mydata     ; set bit 4
     LDRB r4, [r11]
-    
     ADD r4, r4, #1             ; r4 += #1
+    
     STRB r4, [r11]             ; increment counter
     POP {r4-r11}
     BX lr
-
 
 Timer_Handler:
 	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION (BUT WOULDN'T HURT)

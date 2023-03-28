@@ -5,6 +5,7 @@ simple_read_character:
     MOVT r11, #0x4000          ; setting the address
     LDRB r0, [r11]             ; loading the data into r0
     
+    
     POP {lr, r4-r11}           ; restore saved regs
     MOV pc, lr                 ; return to source call
 
@@ -13,16 +14,20 @@ Switch_Handler:
     PUSH {r4-r11}
 
     ; clearing the interrupt
-    
     MOV  r11, #0x541c
     MOVT r11, #0x4002          ; setting the address
     LDRB r4, [r11]             ; loading the data into r4
     
     ORR r4, r4, #8             ; r4 |= #8
+    
+    MOV  r11, #0x541c
+    MOVT r11, #0x4002          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
     ldr r11, ptr_to_mydata     ; set bit 4
     LDRB r4, [r11]
-    
     ADD r4, r4, #1             ; r4 += #1
+    
     STRB r4, [r11]             ; increment counter
     POP {r4-r11}
     BX lr
@@ -30,8 +35,8 @@ Switch_Handler:
 
 uart_interrupt_init:
     PUSH {lr, r4-r11}          ; store regs
-    ; Configure UART for interrupts
     
+    ; Configure UART for interrupts
     MOV  r11, #0xc038
     MOVT r11, #0x4000          ; setting the address
     LDRB r4, [r11]             ; loading the data into r4
@@ -41,8 +46,8 @@ uart_interrupt_init:
     MOV  r11, #0xc038
     MOVT r11, #0x4000          ; setting the address
     STRB r4, [r11]             ; storing the data from r4
-    ; Set processor to allow for interrupts from UART0
     
+    ; Set processor to allow for interrupts from UART0
     MOV  r11, #0xe100
     MOVT r11, #0xe000          ; setting the address
     LDRB r4, [r11]             ; loading the data into r4
@@ -52,6 +57,7 @@ uart_interrupt_init:
     MOV  r11, #0xe100
     MOVT r11, #0xe000          ; setting the address
     STRB r4, [r11]             ; storing the data from r4
+    
     
     POP {lr, r4-r11}           ; restore saved regs
     MOV pc, lr                 ; return to source call
