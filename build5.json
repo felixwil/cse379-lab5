@@ -1,9 +1,18 @@
 {
-    "uart_interrupt_init": [
-        [
-            "if", "r0 == r1",
-            "MOV r0, r1",
-            "elif", "r0 > r1"
-        ]
+    "simple_read_character": [
+        ["load", "b", "r0", "0x4000_c000"]
+    ],
+    "Switch_Handler": [
+        "nostack",
+        "PUSH {r4-r11}\n",
+        "; clearing the interrupt",
+        ["load", "b", "r0", "0x4002_541c"],
+        ["r0", "|=", "#8"],
+        "ldr r11, ptr_to_mydata     ; set bit 4",
+        "LDRB r0, [r11]",
+        ["r0", "+=", "#1"],
+        "STRB r0, [r11]             ; increment counter",
+        "POP {r4-r11}",
+        "BX lr"
     ]
 }
