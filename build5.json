@@ -8,6 +8,7 @@
         "; clearing the interrupt",
         ["load", "b", "r4", "0x4002_541c"],
         ["r4", "|=", "#8"],
+        ["store", "b", "r4", "0x4002_541c"],
         "ldr r11, ptr_to_mydata     ; set bit 4",
         "LDRB r4, [r11]",
         ["r4", "+=", "#1"],
@@ -16,10 +17,11 @@
         "BX lr"
     ],
     "uart_interrupt_init": [
-        "; clearing the interrupt",
+        "; Configure UART for interrupts",
         ["load", "b", "r4", "0x4000_c038"],
         ["r4", "|=", "#8"],
         ["store", "b", "r4", "0x4000_c038"],
+        "; Set processor to allow for interrupts from UART0",
         ["load", "b", "r4", "0xe000e100"],
         ["r4", "|=", "#16"],
         ["store", "b", "r4", "0xe000e100"]
