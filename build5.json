@@ -43,6 +43,9 @@
         ["load", "b", "r4", "0x4002_5410"],
         ["r4", "|=", "#0x08"],
         ["store", "b", "r4", "0x4002_5410"],
-        "; Set processor to allow interrupts from GPIO port F "
+        "; Set processor to allow interrupts from GPIO port F ",
+        ["load", "b", "r4", "0x4002_5410"],
+        ["r4", "|=", "#0x20000000"],
+        ["store", "b", "r4", "0x4002_5410"]
     ]
 }
