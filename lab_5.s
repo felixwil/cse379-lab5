@@ -142,23 +142,34 @@ gpio_interrupt_init:
 
 UART0_Handler: 
 	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION
-	; Your code for your UART handler goes here.
-	; Remember to preserver registers r4-r11 by pushing then popping 
-	; them to & from the stack at the beginning & end of the handler
-
 	; Save registers
+	PUSH {r4-r11}
 
-	; Clear the interrupt
+	; Clear the interrupt, load -> or -> store
+	MOV r11, #0xC044
+	MOVT r11, #0x4000	; address load
+	LDRB r4, [r11]		; data load
+	ORR r4, r4, #8		; Or to set bit 4 to 1
+	STRB r4, [r11]		; Store
 
 	; Simple_read_character
+	BL simple_read_character
 
 	; If q, branch to end, otherwise continue
+	CMP r0, #0x71	
+	BEQ end_program ; ###################################IMPLEMENT THIS####################################
 
 	; Load UART counter, increment it, and store it
+	LDR r11, ptr_to_UART_counter
+	LDRB r4, [r11]
+	ADD r4, r4, #1
+	STRB r4, [r11]
 
 	; Display the graph
+	BL display_graph
 
 	; Restore registers
+	POP {r4-r11}
 
 	BX lr       	; Return
 	
@@ -173,8 +184,8 @@ Switch_Handler:
     ORR r4, r4, #8          	; Set bit 4 to 1
 	STRB r4, [r11]				; Store back to clear interrupt
 
-	; Increment the switch counter, load it, increment, store
-    ldr r11, ptr_to_switch_counter	; Load the address
+	; Increment the switch counter: load it, increment, store
+    LDR r11, ptr_to_switch_counter	; Load the address
     LDRB r4, [r11]					; Read the value into r4
 	ADD r4, r4, #1					; Increment the value
 	STRB r4, [r11]					; Store the value
