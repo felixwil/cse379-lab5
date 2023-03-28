@@ -80,17 +80,21 @@ UART0_Handler:
 
 	; Clear the interrupt
 
-	; Load UART counter and increment
+	; Load UART counter and then increment it
+
+	; Display the graph
+
+	; Store the UART counter
 
 	; Restore registers
 
 	BX lr       	; Return
 
 Switch_Handler:
+	; Save registers
     PUSH {r4-r11}
 
-    ; clearing the interrupt
-    
+    ; Clear the interrupt, using load -> or -> store to not overwrite other data
     MOV  r11, #0x541c
     MOVT r11, #0x4002          ; setting the address
     LDRB r0, [r11]             ; loading the data into r0
