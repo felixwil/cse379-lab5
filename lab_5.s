@@ -159,8 +159,9 @@ UART0_Handler:
 	ORR r4, r4, #8		; Or to set bit 4 to 1
 	STRB r4, [r11]		; Store
 
-	; Simple_read_character
+	; Simple_read_character, store in r5 to return to lab5 later
 	BL simple_read_character 
+	MOV r5, r0
 
 	; Load UART counter, increment it, and store it
 	LDR r11, ptr_to_UART_counter
@@ -172,6 +173,7 @@ UART0_Handler:
 	BL display_graph
 
 	; Restore registers
+	MOV r0, r5
 	POP {r4-r11}
 
 	BX lr       	; Return

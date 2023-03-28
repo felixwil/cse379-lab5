@@ -347,7 +347,6 @@ checkread:
 output_character:
         PUSH {lr, r7, r8}   ; Store register lr on stack
 
-
 checkdisplay:
         MOV r7, #0xC018 ; r7 = checkaddr
         MOVT r7, #0x4000
