@@ -229,19 +229,19 @@ simple_read_character:
     POP {lr, r4-r11}           ; restore saved regs
     MOV pc, lr                 ; return to source call
 
-output_character: 
+# output_character: 
 	
-	MOV PC,LR      	; Return
+# 	MOV PC,LR      	; Return
 
 
-read_string: 
+# read_string: 
 	
-	MOV PC,LR      	; Return
+# 	MOV PC,LR      	; Return
 
 
-output_string: 
+# output_string: 
 	
-	MOV PC,LR      	; Return
+# 	MOV PC,LR      	; Return
 
 
 display_graph:
