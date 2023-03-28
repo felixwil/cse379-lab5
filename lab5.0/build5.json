@@ -1,0 +1,51 @@
+{
+    "simple_read_character": [
+        ["load", "b", "r0", "0x4000_c000"]
+    ],
+    "Switch_Handler": [
+        "nostack",
+        "PUSH {r4-r11}\n",
+        "; clearing the interrupt",
+        ["load", "b", "r4", "0x4002_541c"],
+        ["r4", "|=", "#8"],
+        ["store", "b", "r4", "0x4002_541c"],
+        "ldr r11, ptr_to_mydata     ; set bit 4",
+        "LDRB r4, [r11]",
+        ["r4", "+=", "#1"],
+        "STRB r4, [r11]             ; increment counter",
+        "POP {r4-r11}",
+        "BX lr"
+    ],
+    "uart_interrupt_init": [
+        "; Configure UART for interrupts",
+        ["load", "b", "r4", "0x4000_c038"],
+        ["r4", "|=", "#8"],
+        ["store", "b", "r4", "0x4000_c038"],
+        "; Set processor to allow for interrupts from UART0",
+        ["load", "b", "r4", "0xe000e100"],
+        ["r4", "|=", "#16"],
+        ["store", "b", "r4", "0xe000e100"]
+    ],
+    "gpio_interrupt_init": [
+        "; Set interrupt to be edge sensitive",
+        ["load", "b", "r4", "0x4002_5404"],
+        ["r4", "&=", "#0xf7"],
+        ["store", "b", "r4", "0x4002_5404"],
+        "; Set trigger for interrupt to be single edge",
+        ["load", "b", "r4", "0x4002_5408"],
+        ["r4", "&=", "#0xf7"],
+        ["store", "b", "r4", "0x4002_5408"],
+        "; Set the falling edge to be the trigger (triggers on press, not release)",
+        ["load", "b", "r4", "0x4002_540c"],
+        ["r4", "&=", "#0xf7"],
+        ["store", "b", "r4", "0x4002_540c"],
+        "; Enable the the interrupt",
+        ["load", "b", "r4", "0x4002_5410"],
+        ["r4", "|=", "#0x08"],
+        ["store", "b", "r4", "0x4002_5410"],
+        "; Set processor to allow interrupts from GPIO port F ",
+        ["load", "b", "r4", "0x4002_5410"],
+        ["r4", "|=", "#0x20000000"],
+        ["store", "b", "r4", "0x4002_5410"]
+    ]
+}
