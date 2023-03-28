@@ -30,7 +30,7 @@ Switch_Handler:
 
 uart_interrupt_init:
     PUSH {lr, r4-r11}          ; store regs
-    ; clearing the interrupt
+    ; Configure UART for interrupts
     
     MOV  r11, #0xc038
     MOVT r11, #0x4000          ; setting the address
@@ -41,6 +41,7 @@ uart_interrupt_init:
     MOV  r11, #0xc038
     MOVT r11, #0x4000          ; setting the address
     STRB r4, [r11]             ; storing the data from r4
+    ; Set processor to allow for interrupts from UART0
     
     MOV  r11, #0xe100
     MOVT r11, #0xe000          ; setting the address
