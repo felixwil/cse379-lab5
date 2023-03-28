@@ -16,6 +16,7 @@ UART_counter:	.byte	0x00			; The .byte assembler directive stores a byte
 	
 	.global uart_interrupt_init
 	.global gpio_interrupt_init
+	.global gpio_btn_and_LED_init
 	.global UART0_Handler
 	.global Switch_Handler
 	.global Timer_Handler		; This is needed for Lab #6
@@ -36,9 +37,10 @@ lab5:	; This is your main routine which is called from your C wrapper
 	PUSH {lr}   		; Store lr to stack
 
 	; Initialize everything
-    bl uart_init
-	bl uart_interrupt_init
-	bl gpio_interrupt_init
+    BL uart_init
+	BL gpio_btn_and_LED_init
+	BL uart_interrupt_init
+	BL gpio_interrupt_init
 
 	; Load initial prompt and then print it to screen
 	LDR r0, ptr_to_start_prompt
