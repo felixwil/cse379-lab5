@@ -150,11 +150,13 @@ UART0_Handler:
 
 	; Clear the interrupt
 
-	; Load UART counter and then increment it
+	; Simple_read_character
+
+	; If q, branch to end, otherwise continue
+
+	; Load UART counter, increment it, and store it
 
 	; Display the graph
-
-	; Store the UART counter
 
 	; Restore registers
 
@@ -225,7 +227,39 @@ output_string:
 
 
 display_graph:
+	; Store registers
 
+	; Load the sw1 and UART counts, r4 and r5 respectively
+
+	; Clear the screen (r0=0xC then output_character)
+
+	; Load ptr_to_sw1_header to r0 then output_string
+
+	; Initialize a tracker (r6=0) and the # character (r0=0x23)
+
+	; If counter = sw1_count(r6=r4), skip to sw1_graph_done
+
+	; output_character
+
+	; increment counter
+
+sw1_graph_done:
+	; Move cursor to beginning of the line (r0=0xD then output_character)
+
+	; Move cursor to next line (ro=0xA then output_character)
+
+	; Load ptr_to_UART_header to r0 then output_string
+
+	; Initialize a tracker (r6=0) and the # character (r0=0x23)
+
+	; If counter = UART_count(r6=r5), skip to UART_graph_done
+
+	; output_character
+
+	; increment counter
+
+UART_graph_done:
+	; Restore registers
 
 	MOV PC,LR		; Return
 
