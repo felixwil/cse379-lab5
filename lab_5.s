@@ -239,38 +239,74 @@ output_string:
 
 display_graph:
 	; Store registers
+	PUSH {r4-r11}
 
 	; Load the sw1 and UART counts, r4 and r5 respectively
+	LDR r11, ptr_to_switch_counter
+	LDRB r4, [r11]					; Load switch count to r4
+	LDR r11, ptr_to_UART_counter
+	LDRB r5, [r11]					; Load UART count to r5
 
 	; Clear the screen (r0=0xC then output_character)
+	MOV r0, #0xC
+	BL output_character
 
 	; Load ptr_to_sw1_header to r0 then output_string
+	LDR r0, ptr_to_sw1_header
+	BL output_string
 
 	; Initialize a tracker (r6=0) and the # character (r0=0x23)
+	MOV r6, #0
+	MOV r0, #0x23
 
+sw1_graph:
 	; If counter = sw1_count(r6=r4), skip to sw1_graph_done
+	CMP r6, r4
+	BEQ sw1_graph_done
 
-	; output_character
+	; Output_character
+	BL output_character
 
-	; increment counter
+	; Increment counter
+	ADD r6, r6, #1
+
+	; Loop back until all printed
+	B sw1_graph
 
 sw1_graph_done:
 	; Move cursor to beginning of the line (r0=0xD then output_character)
+	MOV r0, #0xD
+	BL output_character
 
-	; Move cursor to next line (ro=0xA then output_character)
+	; Move cursor to next line (r0=0xA then output_character)
+	MOV r0, #0xA
+	BL output_character
 
 	; Load ptr_to_UART_header to r0 then output_string
+	LDR r0, ptr_to_UART_header
+	BL output_string
 
 	; Initialize a tracker (r6=0) and the # character (r0=0x23)
+	MOV r6, #0
+	MOV r0, #0x23
 
+UART_graph:
 	; If counter = UART_count(r6=r5), skip to UART_graph_done
+	CMP r6, r5
+	BEQ UART_graph_done
 
 	; output_character
+	BL output_character
 
 	; increment counter
+	ADD r6, r6, #1
+
+	; Loop back until all printed
+	B UART_graph
 
 UART_graph_done:
 	; Restore registers
+	POP {r4-r11}
 
 	MOV PC,LR		; Return
 
