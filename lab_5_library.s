@@ -14,6 +14,8 @@
         .global string2int
         .global int2string
 
+
+; ####################### New Subroutine ##############################################
 gpio_btn_and_LED_init:
         PUSH {lr, r0, r1}
         ; Enable clock for port F and D
@@ -73,6 +75,8 @@ gpio_btn_and_LED_init:
         POP {lr, r0, r1}
         MOV pc, lr
 
+
+; ####################### New Subroutine ##############################################
 read_from_keypad:
         PUSH {lr}
 
@@ -157,6 +161,8 @@ exitkeypadread:
         POP {lr}
         MOV pc, lr
 
+
+; ####################### New Subroutine ##############################################
 read_from_push_btns:
         ; save registers we'll be using
         PUSH {lr, r4}
@@ -194,6 +200,8 @@ read_from_push_btns:
         POP {lr, r4}
         MOV pc, lr
 
+
+; ####################### New Subroutine ##############################################
 read_tiva_push_button:
         PUSH {lr} ; save regs
 
@@ -213,6 +221,8 @@ read_tiva_push_button:
         POP {lr}
         MOV pc, lr
 
+
+; ####################### New Subroutine ##############################################
 illuminate_LEDs:
         PUSH {lr} ; save regs
 
@@ -228,6 +238,8 @@ illuminate_LEDs:
         POP {lr}
         MOV pc, lr
 
+
+; ####################### New Subroutine ##############################################
 illuminate_RGB_LED:
         PUSH {lr} ; save regs
 
@@ -254,6 +266,8 @@ illuminate_RGB_LED:
         POP {lr} ; restore regs and return
         MOV pc, lr
 
+
+; ####################### New Subroutine ##############################################
 read_string:
         PUSH {lr}   ; Store register lr on stack
 
@@ -273,7 +287,6 @@ readstringloop:
         B readstringloop ; go back up
 
 exitreadstring:
-
 	; newline for formatting
 	; carriage return has already been outputted above, so we don't need to do that.
         MOV r0, #0x0a
@@ -286,6 +299,7 @@ exitreadstring:
         mov pc, lr
 
 
+; ####################### New Subroutine ##############################################
 output_string:
         PUSH {lr}   ; Store register lr on stack
 
@@ -314,6 +328,8 @@ exitoutputstring:
         POP {lr}
         mov pc, lr
 
+
+; ####################### New Subroutine ##############################################
 read_character:
         PUSH {lr, r7, r8}   ; Store register lr on stack
 
@@ -333,6 +349,7 @@ checkread:
         mov pc, lr
 
 
+; ####################### New Subroutine ##############################################
 output_character:
         PUSH {lr, r7, r8}   ; Store register lr on stack
 
@@ -353,6 +370,7 @@ checkdisplay:
         mov pc, lr
 
 
+; ####################### New Subroutine ##############################################
 uart_init:
         PUSH {lr, r0, r1}  ; Store register lr on stack
 	
@@ -441,6 +459,8 @@ uart_init:
         POP {lr, r0, r1}
         mov pc, lr
 
+
+; ####################### New Subroutine ##############################################
 int2string:
         PUSH {lr, r4-r6}      ; Store register lr on stack
 
@@ -484,6 +504,7 @@ nextplace:
         mov pc, lr
 
 
+; ####################### New Subroutine ##############################################
 string2int:
         PUSH {lr, r11}   ; Store register lr on stack
 
