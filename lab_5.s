@@ -46,40 +46,66 @@ lab5:	; This is your main routine which is called from your C wrapper
 
 uart_interrupt_init:
 		
-	; Your code to initialize the UART0 interrupt goes here
+	; Configure UART for interrupts
+
+	; Set processor to allow for interrupts from UART0
 
 	MOV pc, lr
 
 
 gpio_interrupt_init:
-		
-	; Your code to initialize the SW1 interrupt goes here
-	; Don't forget to follow the procedure you followed in Lab #4
-	; to initialize SW1.
+	; Initialize sw1 using code from previous labs
+
+	; Set interrupt to be edge sensitive
+
+	; Set trigger for interrupt to be single edge
+
+	; Set the falling edge to be the trigger (triggers on press, not release)
+
+	; Enable the the interrupt
+
+	; Set processor to allow interrupts from GPIO port F 
+
 
 	MOV pc, lr
 
 
 UART0_Handler: 
-	
+	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION (BUT WOULDN'T HURT)
 	; Your code for your UART handler goes here.
 	; Remember to preserver registers r4-r11 by pushing then popping 
 	; them to & from the stack at the beginning & end of the handler
+
+	; Save registers
+
+	; Clear the interrupt
+
+	; Code execution here:
+
+	; Restore registers
 
 	BX lr       	; Return
 
 
 Switch_Handler:
-	
+	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION (BUT WOULDN'T HURT)
 	; Your code for your UART handler goes here.
 	; Remember to preserver registers r4-r11 by pushing then popping 
 	; them to & from the stack at the beginning & end of the handler
+
+	; Save registers
+
+	; Clear the interrupt
+
+	; Code execution here
+
+	; Restore the registers
 
 	BX lr       	; Return
 
 
 Timer_Handler:
-	
+	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION (BUT WOULDN'T HURT)
 	; Your code for your Timer handler goes here.  It is not needed
 	; for Lab #5, but will be used in Lab #6.  It is referenced here
 	; because the interrupt enabled startup code has declared Timer_Handler.
