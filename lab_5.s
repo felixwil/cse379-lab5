@@ -45,12 +45,32 @@ lab5:	; This is your main routine which is called from your C wrapper
 
 
 uart_interrupt_init:
-		
-	; Configure UART for interrupts
+    PUSH {lr, r4-r11}          ; store regs
+    ; clearing the interrupt
+    
+    MOV  r11, #0xc038
+    MOVT r11, #0x4000          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    ORR r4, r4, #8             ; r4 |= #8
+    
+    MOV  r11, #0xc038
+    MOVT r11, #0x4000          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    MOV  r11, #0xe100
+    MOVT r11, #0xe000          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    ORR r4, r4, #16            ; r4 |= #16
+    
+    MOV  r11, #0xe100
+    MOVT r11, #0xe000          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    POP {lr, r4-r11}           ; restore saved regs
+    MOV pc, lr                 ; return to source call
 
-	; Set processor to allow for interrupts from UART0
-
-	MOV pc, lr
 
 
 gpio_interrupt_init:
@@ -122,7 +142,7 @@ Timer_Handler:
 
 
 simple_read_character:
-    PUSH {lr, r4-r11}           ; store regs
+    PUSH {lr, r4-r11}          ; store regs
     
     MOV  r11, #0xc000
     MOVT r11, #0x4000          ; setting the address
