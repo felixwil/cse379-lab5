@@ -319,12 +319,6 @@ outputstringloop:
 
 exitoutputstring:
 
-        ; outputting '\r\n' to make formatting nicer
-        MOV r0, #0x0d
-        BL output_character
-        MOV r0, #0x0a
-        BL output_character
-
         POP {lr}
         mov pc, lr
 
