@@ -16,26 +16,26 @@
 
 gpio_btn_and_LED_init:
         PUSH {lr}
-    ; Enable clock for port F and D
-    MOV r1, #0xE608
+        ; Enable clock for port F and D
+        MOV r1, #0xE608
         MOVT r1, #0x400F
         mov r0, #0x2B
         STRB r0, [r1]
 
-    ; Setting the direction for port F, 0 button, 1 for RGB LEDs, for tiva board
-    MOV r1, #0x5400
+        ; Setting the direction for port F, 0 button, 1 for RGB LEDs, for tiva board
+        MOV r1, #0x5400
         MOVT r1, #0x4002
         mov r0, #0x0E
         STRB r0, [r1]
 
         ; Setting the direction for port B, 4 LEDs
-    MOV r1, #0x5400
+        MOV r1, #0x5400
         MOVT r1, #0x4000
         mov r0, #0x0F
         STRB r0, [r1]
 
-    ; Setting the direction for port D, 0 button, for keypad
-    MOV r1, #0x7400
+        ; Setting the direction for port D, 0 button, for keypad
+        MOV r1, #0x7400
         MOVT r1, #0x4000
         mov r0, #0x00
         STRB r0, [r1]

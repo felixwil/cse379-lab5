@@ -80,7 +80,7 @@ UART0_Handler:
 
 	; Clear the interrupt
 
-	; Code execution here:
+	; Load UART counter and increment
 
 	; Restore registers
 
@@ -135,6 +135,11 @@ read_string:
 output_string: 
 	
 	MOV PC,LR      	; Return
+
+
+display_graph:
+
+	MOV PC,LR		; Return
 
 
 	.end
