@@ -44,7 +44,6 @@ lab5:	; This is your main routine which is called from your C wrapper
 	MOV pc, lr
 
 
-
 uart_interrupt_init:
     PUSH {lr, r4-r11}          ; store regs
     ; Configure UART for interrupts
@@ -75,20 +74,66 @@ uart_interrupt_init:
 
 
 gpio_interrupt_init:
-	; Initialize sw1 using code from previous labs
-
-	; Set interrupt to be edge sensitive
-
-	; Set trigger for interrupt to be single edge
-
-	; Set the falling edge to be the trigger (triggers on press, not release)
-
-	; Enable the the interrupt
-
-	; Set processor to allow interrupts from GPIO port F 
-
-
-	MOV pc, lr
+    PUSH {lr, r4-r11}          ; store regs
+    
+    ; Set interrupt to be edge sensitive
+    MOV  r11, #0x5404
+    MOVT r11, #0x4002          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    AND r4, r4, #0xf7          ; r4 &= #0xf7
+    
+    MOV  r11, #0x5404
+    MOVT r11, #0x4002          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    ; Set trigger for interrupt to be single edge
+    MOV  r11, #0x5408
+    MOVT r11, #0x4002          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    AND r4, r4, #0xf7          ; r4 &= #0xf7
+    
+    MOV  r11, #0x5408
+    MOVT r11, #0x4002          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    ; Set the falling edge to be the trigger (triggers on press, not release)
+    MOV  r11, #0x540c
+    MOVT r11, #0x4002          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    AND r4, r4, #0xf7          ; r4 &= #0xf7
+    
+    MOV  r11, #0x540c
+    MOVT r11, #0x4002          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    ; Enable the the interrupt
+    MOV  r11, #0x5410
+    MOVT r11, #0x4002          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    ORR r4, r4, #0x08          ; r4 |= #0x08
+    
+    MOV  r11, #0x5410
+    MOVT r11, #0x4002          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    ; Set processor to allow interrupts from GPIO port F 
+    MOV  r11, #0x5410
+    MOVT r11, #0x4002          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    ORR r4, r4, #0x20000000    ; r4 |= #0x20000000
+    
+    MOV  r11, #0x5410
+    MOVT r11, #0x4002          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    
+    POP {lr, r4-r11}           ; restore saved regs
+    MOV pc, lr                 ; return to source call             ; return to source call
 
 
 UART0_Handler: 
@@ -110,8 +155,7 @@ UART0_Handler:
 	; Restore registers
 
 	BX lr       	; Return
-
-
+	
 Switch_Handler:
 	; Save registers
     PUSH {r4-r11}
@@ -137,7 +181,6 @@ Switch_Handler:
 
 	; Return to interrupted instruction
     BX lr
-
 
 Timer_Handler:
 	; NEEDS TO MAINTAIN REGISTERS R4-R11, R0-R3;R12;LR;PC DONT NEED PRESERVATION (BUT WOULDN'T HURT)

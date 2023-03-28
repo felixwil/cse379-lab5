@@ -62,13 +62,13 @@ def getroutines():
         s = f'{k}:'
         if stack:
             s += makeline('PUSH {lr, r4-r11}', 'store regs')
+            s += indent
         else:
             v = v[1:]
         for i, line in enumerate(v):
             if type(line) is str: 
                 s += indent + line
             elif type(line) is list:
-                s += indent
                 if line[0] == 'if':
                     s += makeif(k, i, line)
                 elif line[0] == 'store':
@@ -84,6 +84,7 @@ def getroutines():
                 elif line[1][1] == '=':
                     op = operations[line[1][0]]
                     s += makeline(f"{op} {line[0]}, {line[0]}, {line[2]}", ' '.join(line))
+                s += indent
         if stack:
             s += indent
             s += makeline('POP {lr, r4-r11}', 'restore saved regs')
