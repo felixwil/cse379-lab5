@@ -6,13 +6,22 @@
         "nostack",
         "PUSH {r4-r11}\n",
         "; clearing the interrupt",
-        ["load", "b", "r0", "0x4002_541c"],
-        ["r0", "|=", "#8"],
+        ["load", "b", "r4", "0x4002_541c"],
+        ["r4", "|=", "#8"],
         "ldr r11, ptr_to_mydata     ; set bit 4",
-        "LDRB r0, [r11]",
-        ["r0", "+=", "#1"],
-        "STRB r0, [r11]             ; increment counter",
+        "LDRB r4, [r11]",
+        ["r4", "+=", "#1"],
+        "STRB r4, [r11]             ; increment counter",
         "POP {r4-r11}",
         "BX lr"
+    ],
+    "uart_interrupt_init": [
+        "; clearing the interrupt",
+        ["load", "b", "r4", "0x4000_c038"],
+        ["r4", "|=", "#8"],
+        ["store", "b", "r4", "0x4000_c038"],
+        ["load", "b", "r4", "0xe000e100"],
+        ["r4", "|=", "#16"],
+        ["store", "b", "r4", "0xe000e100"]
     ]
 }

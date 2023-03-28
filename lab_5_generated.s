@@ -16,15 +16,43 @@ Switch_Handler:
     
     MOV  r11, #0x541c
     MOVT r11, #0x4002          ; setting the address
-    LDRB r0, [r11]             ; loading the data into r0
+    LDRB r4, [r11]             ; loading the data into r4
     
-    ORR r0, r0, #8             ; r0 |= #8
+    ORR r4, r4, #8             ; r4 |= #8
     ldr r11, ptr_to_mydata     ; set bit 4
-    LDRB r0, [r11]
+    LDRB r4, [r11]
     
-    ADD r0, r0, #1             ; r0 += #1
-    STRB r0, [r11]             ; increment counter
+    ADD r4, r4, #1             ; r4 += #1
+    STRB r4, [r11]             ; increment counter
     POP {r4-r11}
     BX lr
+
+
+uart_interrupt_init:
+    PUSH {lr, r4-r11}          ; store regs
+    ; clearing the interrupt
+    
+    MOV  r11, #0xc038
+    MOVT r11, #0x4000          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    ORR r4, r4, #8             ; r4 |= #8
+    
+    MOV  r11, #0xc038
+    MOVT r11, #0x4000          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    MOV  r11, #0xe100
+    MOVT r11, #0xe000          ; setting the address
+    LDRB r4, [r11]             ; loading the data into r4
+    
+    ORR r4, r4, #16            ; r4 |= #16
+    
+    MOV  r11, #0xe100
+    MOVT r11, #0xe000          ; setting the address
+    STRB r4, [r11]             ; storing the data from r4
+    
+    POP {lr, r4-r11}           ; restore saved regs
+    MOV pc, lr                 ; return to source call
 
 
