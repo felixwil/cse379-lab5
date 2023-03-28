@@ -4,6 +4,8 @@
 	.global mydata
 
 start_prompt:	.string "Press sw1 or any key to continue:", 0
+sw1_header:		.string "sw1 : ", 0
+UART_header:	.string "UART: ", 0
 switch_counter:	.byte	0x00	; This is where you can store data. 
 UART_counter:	.byte	0x00			; The .byte assembler directive stores a byte
 			; (initialized to 0x20) at the label mydata.  
@@ -25,6 +27,8 @@ UART_counter:	.byte	0x00			; The .byte assembler directive stores a byte
 	.global lab5
 	
 ptr_to_start_prompt:		.word start_prompt
+ptr_to_sw1_header:			.word sw1_header
+ptr_to_UART_header:			.word UART_header
 ptr_to_switch_counter:		.word switch_counter
 ptr_to_UART_counter:		.word UART_counter
 
@@ -221,6 +225,7 @@ output_string:
 
 
 display_graph:
+
 
 	MOV PC,LR		; Return
 
